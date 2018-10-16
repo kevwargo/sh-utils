@@ -1,0 +1,6 @@
+#!/bin/bash
+
+pkg="$1"
+[ -z "$pkg" ] && exit 1
+grep DESCRIPTION $(find /usr/portage/*-* -regex ".*/$pkg/.*\.ebuild$")
+

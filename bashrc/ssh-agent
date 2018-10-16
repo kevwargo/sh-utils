@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -x "`which keychain 2>/dev/null`" ]; then
+    keychain &> /dev/null
+    source ~/.keychain/$HOSTNAME-sh
+else
+    echo "keychain is not installed" >/dev/stderr
+fi

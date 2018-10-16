@@ -1,0 +1,31 @@
+#!/bin/bash
+
+getppid()
+{
+    pid=${1:-$$}
+    ppid=$(awk '$1 ~ /PPid/ { print $2 }' /proc/$pid/status)
+    echo $ppid
+}
+
+getpcalltrace()
+{
+    local pid_list=""
+    local ppid=${1:-$$}
+    while true; do
+        pid_list="$ppid $pid_list"
+        [[ $ppid = 1 ]] && break
+        ppid=$(getppid $ppid)
+    done
+    echo $pid_list
+}
+
+printpcalltrace()
+{
+    local pid_list=$(getpcalltrace $@)
+    local indent=1
+    for pid in $pid_list; do
+		printf ' %.0s' $(seq $indent)
+        echo $pid $(pidcmdline $pid)
+        (( indent += 1 ))
+    done
+}

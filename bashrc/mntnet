@@ -1,0 +1,7 @@
+#!/bin/bash
+
+smbshare()
+{
+    [ -z "$1" ] && return 1
+    smbclient -gNL "$1" 2>/dev/null | awk -F'|' '$1 == "Disk" && substr($2, length($2)) != "$" {print $2}'
+}

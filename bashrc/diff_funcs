@@ -1,0 +1,51 @@
+#!/bin/bash
+
+splitpdf()
+{ [ $# -ge 3 ] && qpdf "$1" --pages "$1" $2 -- "$3"; }
+
+getsize()
+{
+    stat -c "%s" $1 2> /dev/null || echo 0
+}
+
+pidcmdline()
+{
+    pid=${1:-$$}
+    cat /proc/${pid}/cmdline | tr '\000' ' ' && echo
+}
+
+# read sector's partition table
+rspt()
+{
+    disk="$1"
+    sector="$2"
+    if [ -z "$disk" -o -z "$(echo "$sector" | egrep "^(0x[[:xdigit:]]+|[0-9]+)$")" ]; then
+        echo "Usage: rspt <disk> <sector>"
+        return 1
+    fi
+    dd if="$disk" bs=16 skip=$(( $sector * 32 + 27 )) count=5 2>/dev/null | hexdump -C
+}
+
+a1c()
+{
+    local c
+    c=${1:-20}
+    awk "{printf(\"%-${c}s\", \$1); \$1 = \"\"; print \$0}"
+}
+
+findpkg()
+{
+    dir="${2:-/usr/portage}"
+    find "$dir" -mindepth 2 -maxdepth 2 -type d -name "*${1}*"
+}
+
+ok()
+{
+    okular "$@" &>/dev/null &
+}
+
+mdcd()
+{
+    mkdir -p "$1" && cd "$1"
+}
+

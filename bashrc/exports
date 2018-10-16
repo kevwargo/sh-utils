@@ -1,0 +1,22 @@
+#!/bin/bash
+
+PATH=${HOME}/.local/bin:${PATH}
+export PATH
+
+if [ $UID == 0 ]; then
+    ps1_part_1='\[\033[01;31m\]\h\[\033[01;34m\] \w\[\033[00m\]'
+else
+    ps1_part_1='\[\033[01;32m\]\h\[\033[01;34m\] \w\[\033[00m\]'
+fi
+ps1_part_2='\[\033[01;34m\]\$\[\033[00m\] '
+
+export PS1="$ps1_part_1 $ps1_part_2"
+export HISTSIZE=100000
+export HISTCONTROL=ignoreboth
+export HISTTIMEFORMAT="%d/%m/%y %T "
+
+if [ -z "$INSIDE_EMACS" ]; then
+    export EDITOR='emacsclient -nw -a ""'
+else
+    export EDITOR="emacsclient -a \"\" --display $DISPLAY -n"
+fi

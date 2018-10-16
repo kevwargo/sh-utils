@@ -1,0 +1,14 @@
+#!/bin/bash
+
+unalias cd &> /dev/null
+
+_cd_go() {
+    [ -d "$1" ] && pushd > /dev/null .
+    cd "$@"
+}
+
+bk() {
+    popd &> /dev/null || return 0
+}
+
+alias cd=_cd_go

@@ -1,0 +1,43 @@
+#!/bin/bash
+
+alias p-="python3"
+alias p="python2"
+
+alias l="ls"
+alias la="ls -A"
+alias ll="ls -l"
+alias lla="ls -lA"
+alias hd="hexdump -C"
+alias ydt='youtube-dl -o "%(title)s.%(ext)s"'
+alias ydt-mp3='youtube-dl -o "%(title)s.%(ext)s" -x --audio-format mp3'
+
+alias eavt="emerge -avt"
+alias e=emerge
+
+if [ -z "$INSIDE_EMACS" ]; then
+    alias n='emacsclient -nw -a ""'
+else
+    alias n='emacsclient -a "" --display $DISPLAY -n'
+fi
+
+alias ec='emacsclient -a "" --display "$DISPLAY" -n'
+alias c=cat
+
+alias disasm="objdump -D -b binary -m i386 -M addr16,data16"
+
+alias sc='egrep -v "^[[:space:]]*(#|$)"'
+alias s=sleep
+
+alias m5=md5sum
+
+alias ipt-show="iptables-save | grep '^[^:#]'"
+
+alias diff='diff -u'
+alias grep='grep --color=auto'
+alias cgrep='grep --color=always'
+alias xzgrep='xzgrep --color=auto'
+alias cxzgrep='xzgrep --color=always'
+
+if [ $UID -ne 0 ]; then
+    alias openrc='sudo /sbin/openrc'
+fi

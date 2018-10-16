@@ -1,0 +1,66 @@
+#!/bin/bash
+
+usage()
+{
+    echo "Usage: findgrep [OPTIONS] [DIR] REGEXP [-- FIND_OPTIONS [-- GREP_OPTIONS [-- TAIL]]]"
+    echo "Options:"
+    echo " -h, --help               shows help"
+    echo " -n                       don't add -H (print the filename for the match) option to grep"
+    echo " -nc                      no color"
+    [ -n $1 ] && exit $1 || exit 0
+}
+
+
+grep_H="-H"
+color="--color=auto"
+
+if [[ "$0" == *"findgrep" ]]; then
+    while [ "$1" != "--" -a $# -gt 0 ]; do 
+        case "$1" in
+            "-h" | "--help" )
+                usage ;;
+            "-n" )
+                grep_H=""
+                shift ;;
+            "-nc" )
+                color=""
+                shift ;;
+            * )
+                if [ -z "$regexp" ]; then
+                    regexp="$1"
+                    shift
+                else
+                    dir="$regexp"
+                    regexp="$1"
+                    shift
+                fi
+                ;;
+        esac
+    done
+    [ -z "$regexp" ] && usage 1
+    shift
+    findopts=""
+    while [[ "$1" != "--" && $# -gt 0 ]]; do
+        findopts="$findopts \"$1\""
+        shift
+    done
+    shift
+    grepopts=""
+    while [[ "$1" != "--" && $# -gt 0 ]]; do
+        grepopts="$grepopts \"$1\""
+        shift
+    done
+    shift
+    
+    findopts="-type f $findopts"
+    grepopts+=" $color"
+
+    cmdstr="find $dir $findopts -exec grep ${grep_H} $grepopts \"$regexp\" {} \\;"
+
+    # echo $findopts
+    # echo $grepopts
+
+    # echo $cmdstr
+    eval $cmdstr
+
+fi

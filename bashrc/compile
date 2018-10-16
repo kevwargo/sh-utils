@@ -1,0 +1,75 @@
+#!/bin/bash
+
+### Functions for compiling C code ###
+
+# just compile
+cmpl()
+{
+    src=$1; shift
+    exe=$(splitext $src)
+    gcc --std=c99 -D_POSIX_C_SOURCE=200809L $src -o $exe $@
+}
+
+# compile and execute
+cmpx()
+{
+    src=$1; shift
+    exe=$(splitext $src)
+    cmpl $src -o $exe
+    $(realpath $exe) $@
+}
+
+hexcode()
+{
+    tmp=`tempfile`
+    echo -e "$@" > $tmp
+    nasm -f bin -o $tmp.bin $tmp
+    hd $tmp.bin
+    rm $tmp{,.bin}
+}
+
+pnasm()
+{
+    srctmp=`tempfile`
+    read line
+    while [[ "$line" != "" ]]; do
+        echo "$line" >> $srctmp
+        read line
+    done
+    pipeout=true
+    local nasmargs
+    while ! [ -z "$1" ]; do
+        case "$1" in
+            "-o" )
+                shift
+                nasmargs+=" -o \"$1\""
+                shift
+                pipeout=false
+            ;;
+            * )
+                nasmargs+=" $1"
+                shift
+            ;;
+        esac
+    done
+    if $pipeout; then
+        outtmp=`tempfile`
+        nasm $srctmp $nasmargs -o $outtmp
+        hd $outtmp
+        rm $outtmp
+    else
+        nasm $srctmp $nasmargs
+    fi
+    rm $srctmp
+}
+
+avrcmp()
+{
+    avra -I /usr/include/avr/ $@
+}
+
+avrprog()
+{
+    [ -z "$1" ] && return 1
+    avrdude -p m8 -P usb -c usbasp -U flash:w:$1
+}
