@@ -1,7 +1,6 @@
 #!/bin/bash
 
-alias p-="python3"
-alias p="python2"
+alias p="python3"
 
 alias l="ls"
 alias la="ls -A"
@@ -10,9 +9,6 @@ alias lla="ls -lA"
 alias hd="hexdump -C"
 alias ydt='youtube-dl -o "%(title)s.%(ext)s"'
 alias ydt-mp3='youtube-dl -o "%(title)s.%(ext)s" -x --audio-format mp3'
-
-alias eavt="emerge -avt"
-alias e=emerge
 
 if [ -z "$INSIDE_EMACS" ]; then
     alias n='emacsclient -nw -a ""'
@@ -38,6 +34,3 @@ alias cgrep='grep --color=always'
 alias xzgrep='xzgrep --color=auto'
 alias cxzgrep='xzgrep --color=always'
 
-if [ $UID -ne 0 ]; then
-    alias openrc='sudo /sbin/openrc'
-fi
