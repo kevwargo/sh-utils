@@ -1,0 +1,31 @@
+read_no_echo() {
+    local prompt
+    prompt="$1"
+    [ -z "$prompt" ] && return 1
+
+    local stty_save
+    local input
+    echo -n "$prompt" >/dev/tty
+    stty_save="`stty -g`"
+    trap 'stty "$stty_save"' 2
+    stty -echo  # turn off echo
+    read input
+    echo '' >/dev/tty
+    stty "$stty_save"
+    trap - 2
+
+    echo "$input"
+}
+
+readpasswd() {
+    tty >/dev/null || return 1
+
+    local passwd
+    passwd="$(read_no_echo 'Password: ')"
+    if [ "$passwd" != "$(read_no_echo 'Repeat password: ')" ]; then
+        echo "Passwords don't match"
+        return 1
+    fi
+
+    export ${1:-PASSWD}="$passwd"
+}
