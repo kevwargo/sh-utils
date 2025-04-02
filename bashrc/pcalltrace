@@ -24,7 +24,7 @@ printpcalltrace()
     local pid_list=$(getpcalltrace $@)
     local indent=1
     for pid in $pid_list; do
-		printf ' %.0s' $(seq $indent)
+        printf ' %.0s' $(seq $indent)
         echo $pid $(pidcmdline $pid)
         (( indent += 1 ))
     done
