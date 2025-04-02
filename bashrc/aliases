@@ -1,7 +1,9 @@
 #!/bin/bash
 
 alias p="python3"
+alias i="ipython3"
 
+alias ls="ls --color"
 alias l="ls"
 alias la="ls -A"
 alias ll="ls -l"
@@ -34,3 +36,10 @@ alias cgrep='grep --color=always'
 alias xzgrep='xzgrep --color=auto'
 alias cxzgrep='xzgrep --color=always'
 
+alias upload='dolphin --select'
+
+alias ffjson='ffprobe -v quiet -print_format json -show_format -show_streams'
+
+alias sq='sort | uniq'
+alias sqc='sort | uniq -c'
+alias sqcs='sort | uniq -c | sort -n'
