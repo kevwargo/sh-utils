@@ -1,16 +1,13 @@
-LOG_WINDOW_NAME=logs
-
 kdbus() {
     qdbus org.kde.konsole "$@"
 }
 
-wait-for-konsole() {
-    if ! kdbus >> /home/jarasz/kdbus.log 2>&1; then
-        echo `date` kdbus fail >> /home/jarasz/kdbus.log
-        /mnt/develop/my/cpp/konsole/build/src/konsole &
-        echo $!
-        qdbus-wait org.kde.konsole
-    else
-        echo `date` kdbus success >> /home/jarasz/kdbus.log
+konsole_wait() {
+    if ! kdbus &>/dev/null; then
+        konsole --new-tab >> ~/konsole.log 2>&1 &
+        cat /proc/$!/environ | tr '\0' '\n' > ~/konsole-env-$!.log
+        while ! kdbus &>/dev/null; do
+            sleep 1
+        done
     fi
 }
