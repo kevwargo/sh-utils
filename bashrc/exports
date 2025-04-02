@@ -1,14 +1,10 @@
 #!/bin/bash
 
-PATH=${HOME}/.local/bin:${PATH}
-export PATH
-
 export HISTSIZE=100000
 export HISTCONTROL=ignoreboth
 export HISTTIMEFORMAT="%d/%m/%y %T "
+export TERM=xterm-256color
 
-if [ -z "$INSIDE_EMACS" ]; then
-    export EDITOR='emacsclient -nw -a ""'
-else
-    export EDITOR="emacsclient -a \"\" --display $DISPLAY -n"
-fi
+export EDITOR=emacsclient
+
+stty -ixon
