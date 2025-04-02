@@ -44,8 +44,31 @@ ok()
     okular "$@" &>/dev/null &
 }
 
+okt()
+{
+    okteta "$@" &>/dev/null &
+}
+
 mdcd()
 {
     mkdir -p "$1" && cd "$1"
 }
 
+dfmt()
+{
+    if [ -z "$1" ]; then
+        date +%Y%m%d-%H%M%S
+    else
+        date -d "@${1}" +%Y%m%d-%H%M%S
+    fi
+}
+
+dt()
+{
+    date +"${1:-%Y-%m-%d}"
+}
+
+dtt()
+{
+    date +"${1:-%Y%m%d-%H%M%S}"
+}
