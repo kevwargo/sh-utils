@@ -3,8 +3,9 @@
 unalias cd &> /dev/null
 
 _cd_go() {
-    [ -d "$1" ] && pushd > /dev/null .
-    cd "$@"
+    local dir="${1:-$HOME}"
+    [ -d "$dir" ] && pushd . > /dev/null
+    cd "$dir"
 }
 
 bk() {
