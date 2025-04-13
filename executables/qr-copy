@@ -1,0 +1,12 @@
+#!/bin/bash
+
+error() {
+    echo "$@" >/dev/stderr
+    exit 1
+}
+
+png=`mktemp --tmpdir zbar-XXXXXX.png`
+[ -z "$png" ] && error "failed to create temp PNG file"
+
+import $png && zbarimg --raw -1 -q $png | xsel -b
+rm $png
