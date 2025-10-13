@@ -1,8 +1,10 @@
+# -*- mode: sh -*-
+
 PYENV_ROOT="$HOME/.pyenv"
 if [ -d $PYENV_ROOT ]; then
     export PYENV_ROOT
     command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-    eval "$(pyenv init -)"
+    eval "$(pyenv init - bash)"
 else
     unset PYENV_ROOT
 fi
