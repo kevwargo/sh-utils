@@ -8,3 +8,4 @@ export TERM=xterm-256color
 export EDITOR=emacsclient
 
 stty -ixon
+set +H
