@@ -1,0 +1,16 @@
+#!/bin/bash
+
+command -v xsel >/dev/null || exit 1
+command -v wc >/dev/null || exit 1
+command -v kdialog >/dev/null || exit 1
+
+case "$1" in
+    "-p"|"-b"|"-s"|"")
+        :
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+kdialog --msgbox "$(xsel -o $1 | wc -c)"
