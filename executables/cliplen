@@ -13,4 +13,5 @@ case "$1" in
         ;;
 esac
 
-kdialog --msgbox "$(xsel -o $1 | wc -c)"
+xsel_cmd="xsel -o $1"
+kdialog --title "Cliplen" --msgbox "The length of '$xsel_cmd' is $(eval $xsel_cmd | wc -c)"
